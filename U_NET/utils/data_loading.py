@@ -7,17 +7,17 @@ import numpy as np
 import torch
 from PIL import Image
 from torch.utils.data import Dataset
+from einops import rearrange
 
 
 class BasicDataset(Dataset):
-    def __init__(self, images_dir: str, masks_dir: str, scale: float = 1.0,
+    def __init__(self, images_dir: str, masks_dir: str, is_unet: bool,
                  mask_suffix: str = '', forest: bool = False):
         self.images_dir = Path(images_dir)
         self.masks_dir = Path(masks_dir)
-        assert 0 < scale <= 1, 'Scale must be between 0 and 1'
-        self.scale = scale
         self.mask_suffix = mask_suffix
         self.forest = forest
+        self.is_unet = is_unet
         if not self.forest:
             self.colormap = [[0, 0, 0],[108, 64, 20],[255, 229, 204],[0, 102, 0],[0, 255, 0],[0, 153, 153],[0, 128, 255],[0, 0, 255],
                         [255, 255, 0],[255, 0, 127],[64, 64, 64],[255, 128, 0],[255, 0, 0],[153, 76, 0],[102, 102, 0],[102, 0, 0],
@@ -34,17 +34,23 @@ class BasicDataset(Dataset):
         return len(self.ids)
 
     @staticmethod
-    def preprocess(pil_img, colormap, is_mask, is_forest):
-        if is_forest:
-            newW = 768
-            newH = 384
+    def preprocess(pil_img, colormap, is_mask, is_forest, is_unet):
+        # ViT requires 384x384 input
+        if is_unet:
+            if is_forest:
+                newW = 768
+                newH = 384
+            else:
+                newW = 680
+                newH = 550
         else:
-            newW = 680
-            newH = 550
+            newW = 384
+            newH = 384
+
         pil_img = pil_img.resize((newW, newH), resample=Image.NEAREST if is_mask else Image.BICUBIC)
         img_ndarray = np.asarray(pil_img)
         if is_mask:
-           
+
             output_mask = np.zeros((newH,newW),dtype=int)
             for i, color in enumerate(colormap):
                 truthmap = np.all(np.equal(img_ndarray,color),axis=-1).astype(int)
@@ -56,8 +62,13 @@ class BasicDataset(Dataset):
                 img_ndarray = img_ndarray[np.newaxis, ...]
             else:
                 img_ndarray = img_ndarray.transpose((2, 0, 1))
-    
+
             img_ndarray = img_ndarray/255
+        if not is_unet:
+            if is_mask:
+                img_ndarray = rearrange(img_ndarray, 'b (h p1) (w p2) -> (b h w) (p1 p2)', p1=16, p2=16)
+            else:
+                img_ndarray = rearrange(img_ndarray, 'b c (h p1) (w p2) -> (b h w) (p1 p2) c', p1=16, p2=16)
 
         return img_ndarray
 
@@ -91,8 +102,8 @@ class BasicDataset(Dataset):
         assert img.size == mask.size, \
             f'Image and mask {name} should be the same size, but are {img.size} and {mask.size}'
 
-        img = self.preprocess(img, self.colormap, is_mask=False, is_forest=self.forest)
-        mask = self.preprocess(mask, self.colormap, is_mask=True, is_forest=self.forest)
+        img = self.preprocess(img, self.colormap, is_mask=False, is_forest=self.forest, is_unet=self.is_unet)
+        mask = self.preprocess(mask, self.colormap, is_mask=True, is_forest=self.forest, is_unet=self.is_unet)
 
         return {
             'image': torch.as_tensor(img.copy()).float().contiguous(),
@@ -101,5 +112,5 @@ class BasicDataset(Dataset):
 
 
 class ForestDataset(BasicDataset):
-    def __init__(self, images_dir, masks_dir, scale=1):
-        super().__init__(images_dir, masks_dir, scale, mask_suffix='_mask', forest=True)
+    def __init__(self, images_dir, masks_dir, is_unet):
+        super().__init__(images_dir, masks_dir, is_unet, mask_suffix='_mask', forest=True)

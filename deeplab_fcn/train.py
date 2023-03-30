@@ -160,7 +160,7 @@ def train_net(net,
         'Test IoU': test_score})
     if save_checkpoint:
         Path(dir_checkpoint).mkdir(parents=True, exist_ok=True)
-        torch.save(net.state_dict(), str(dir_checkpoint / 'FCN_Forest{}.pth'.format(epoch)))
+        torch.save(net.state_dict(), str(dir_checkpoint / 'DLV3_RUGD{}.pth'.format(epoch)))
         logging.info(f'Checkpoint {epoch} saved!')
 
 
@@ -172,12 +172,12 @@ def get_args():
                         help='Learning rate', dest='lr')
     parser.add_argument('--load', '-f', type=str, default=False, help='Load model from a .pth file')
     parser.add_argument('--scale', '-s', type=float, default=1.0, help='Downscaling factor of the images')
-    parser.add_argument('--validation', '-v', dest='val', type=float, default=10.0,
+    parser.add_argument('--validation', '-v', dest='val', type=float, default=10.05,
                         help='Percent of the data that is used as validation (0-100)')
     parser.add_argument('--amp', action='store_true', default=True, help='Use mixed precision')
     parser.add_argument('--bilinear', action='store_true', default=False, help='Use bilinear upsampling')
-    parser.add_argument('--data', action='store_true', default=True, help='Use FreiburgForest dataset')
-    parser.add_argument('--model', action='store_true', default=False, help='Use DeepLabV3 model')
+    parser.add_argument('--data', action='store_true', default=False, help='Use FreiburgForest dataset')
+    parser.add_argument('--model', action='store_true', default=True, help='Use DeepLabV3 model')
 
     return parser.parse_args()
 

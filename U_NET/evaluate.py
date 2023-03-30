@@ -5,7 +5,7 @@ from tqdm import tqdm
 from utils.mean_iou import mIOU
 
 
-def evaluate(net, dataloader, device):
+def evaluate(net, dataloader, device, n_classes):
     net.eval()
     num_val_batches = len(dataloader)
     iou = 0
@@ -22,7 +22,7 @@ def evaluate(net, dataloader, device):
             mask_pred = net(image)
             mask_pred = F.softmax(mask_pred, dim=1)
             mask_pred = mask_pred.argmax(dim=1)
-            iou += mIOU(net.n_classes, mask_pred, mask_true)
+            iou += mIOU(n_classes, mask_pred, mask_true)
 
     net.train()
 
