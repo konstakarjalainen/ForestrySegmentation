@@ -1,5 +1,5 @@
 # Bachelor's thesis by Konsta Karjalainen
-Image segmentation for Forestry scenes
+"Image segmentation for Forestry scenes"
 
 This repository has two codes for semnatic segmentation and instance segmentation. U_net folder and deeplab_fcn folder are for semantic segmentation and Mask R-CNN is for instance segmentation.
 
