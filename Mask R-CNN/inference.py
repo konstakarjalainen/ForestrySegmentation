@@ -16,9 +16,9 @@ from utils.utils import filter_instances_with_score, get_metadata_from_annos_fil
 ### PROGRAM VARIABLES ###
 #########################
 
-OUTPUT_FOLDER = "outputs/cana100_synth"              # Training outputs to use for inference
-DIRECTORY = '/home/konsta/CanaTree100/images/image_04860_RGB.png'     # Directory from which to read image to predict
-ANNOTATION = '/home/konsta/CanaTree100/annotations/fold_01/test_fold_01.json'
+OUTPUT_FOLDER = "outputs/log"              # Training outputs to use for inference
+DIRECTORY = '/home/konsta/PycharmProjects/Segmentation/Mask R-CNN/data/prescaled/images/000033.png'     # Directory from which to read image to predict
+ANNOTATION = '/home/konsta/PycharmProjects/Segmentation/Mask R-CNN/data/prescaled/coco_annotation.json'     # Annotation file for metadata
 DETECTION_THRESHOLD = 0.7                              # Minimal network confidence to keep instance
 
 #########################
