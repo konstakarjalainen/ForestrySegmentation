@@ -14,3 +14,5 @@ The code is based on logpiles segmentation implementation: https://github.com/no
 Used datasets are TimberSeg 1.0 used in the logpiles segmentation: https://data.mendeley.com/datasets/y5npsm3gkj/ and CanaTree100 dataset from: https://github.com/norlab-ulaval/PercepTreeV1
 
 Also pretrained weights are used from the SynthTree43k training from PercepTreeV1 implentation.
+
+![alt text](https://github.com/konstakarjalainen/thesis/blob/main/cana100_prediction.png?raw=true)
