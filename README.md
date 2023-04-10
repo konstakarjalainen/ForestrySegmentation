@@ -15,4 +15,8 @@ Used datasets are TimberSeg 1.0 used in the logpiles segmentation: https://data.
 
 Also pretrained weights are used from the SynthTree43k training from PercepTreeV1 implentation.
 
+Example predction of the model for CanaTree100 image:
 ![alt text](https://github.com/konstakarjalainen/thesis/blob/main/cana100_prediction.png?raw=true)
+
+Example prediction of the model for TimbeSeg 1.0 image:
+![alt text](https://github.com/konstakarjalainen/thesis/blob/main/log_prediction.png?raw=true)
