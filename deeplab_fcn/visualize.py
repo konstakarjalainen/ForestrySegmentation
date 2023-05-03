@@ -21,7 +21,7 @@ if __name__ == '__main__':
     RUGD_mask = Path('/home/konsta/PycharmProjects/Segmentation/RUGD_mask.png')
     FOREST_img = Path('/home/konsta/PycharmProjects/Segmentation/FOREST_img.jpg')
     FOREST_mask = Path('/home/konsta/PycharmProjects/Segmentation/FOREST_mask.png')
-    path_model_RUGD = Path('checkpoints/FCN_RUGD30.pth')
+    path_model_RUGD = Path('checkpoints/DLV3_RUGD30.pth')
     path_model_FOREST = Path('checkpoints/FCN_Forest30.pth')
 
     if RUGD:
@@ -37,8 +37,8 @@ if __name__ == '__main__':
         path_mask = FOREST_mask
         path_model = path_model_FOREST
 
-    #model = models.deeplabv3_resnet50(num_classes=num_classes)
-    model = models.fcn_resnet50(num_classes=num_classes)
+    model = models.deeplabv3_resnet50(num_classes=num_classes)
+    #model = models.fcn_resnet50(num_classes=num_classes)
     image = Image.open(path_img)
     mask_img = Image.open(path_mask)
 
