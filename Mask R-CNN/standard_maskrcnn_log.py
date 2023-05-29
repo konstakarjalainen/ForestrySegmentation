@@ -53,7 +53,7 @@ def init_maskrcnn(config_file, train_dicts, test_dicts, output_dir, fold_num=Non
     cfg.DATALOADER.NUM_WORKERS = 8
     cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 256
     cfg.SOLVER.IMS_PER_BATCH = 1
-    cfg.SOLVER.MAX_ITER = 5600
+    cfg.SOLVER.MAX_ITER = 50*len(train_dicts)
 
     # Initialize network weights (to finetune)
     if initial_weights is not None:

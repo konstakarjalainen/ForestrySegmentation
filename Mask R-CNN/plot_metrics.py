@@ -3,9 +3,9 @@ import numpy as np
 import json
 
 
-metrics_file = 'outputs/cana100/metrics.json'
+#metrics_file = 'outputs/cana100/metrics.json'
 #metrics_file = 'outputs/cana100_synth/metrics.json'
-#metrics_file = 'outputs/log/metrics.json'
+metrics_file = 'outputs/log/metrics.json'
 losses = []
 ap = 0
 ap50 = 0
